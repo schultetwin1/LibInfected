@@ -362,6 +362,7 @@
 				C92721311AE9D9070071148C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C92721321AE9D9070071148C /* Build configuration list for PBXNativeTarget "LibInfectedTests" */ = {
 			isa = XCConfigurationList;
@@ -370,6 +371,7 @@
 				C92721341AE9D9070071148C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
