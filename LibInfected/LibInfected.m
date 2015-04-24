@@ -106,6 +106,8 @@ NSString *const INFECTED_CHARACTERISTIC_UUID = @"BB6537C6-0622-416C-BB54-79A3911
     
     NSArray* services = dict[CBPeripheralManagerRestoredStateServicesKey];
     
+    [self.myPeripheralManager removeAllServices];
+    
     for (CBMutableService *service in services) {
         [self.myPeripheralManager addService:service];
     }
@@ -141,6 +143,8 @@ NSString *const INFECTED_CHARACTERISTIC_UUID = @"BB6537C6-0622-416C-BB54-79A3911
     for (CBPeripheral* peripheral in peripherals) {
         [self.myCentralManager connectPeripheral:peripheral options:nil];
     }
+    
+    [self.myCentralManager stopScan];
     
     [self.myCentralManager scanForPeripheralsWithServices:scanServices options:scanOptions];
 }
