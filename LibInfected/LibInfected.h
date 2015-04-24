@@ -17,7 +17,7 @@ extern NSString *const CENTRAL_MANAGER_IDENTIFIER;
 -(void)bleOff;
 -(void)bleOn;
 -(CBATTRequest*)receivedReadRequest:(CBATTRequest*) request;
--(void) receivedReadResponse:(NSData*) data;
+-(void) receivedReadResponse:(NSData*) data peripheralRSSI:(NSNumber*) rssi;
 
 @end
 

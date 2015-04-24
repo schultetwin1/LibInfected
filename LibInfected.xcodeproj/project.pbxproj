@@ -10,6 +10,7 @@
 		C927211F1AE9D9070071148C /* LibInfected.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C927211E1AE9D9070071148C /* LibInfected.h */; };
 		C92721211AE9D9070071148C /* LibInfected.m in Sources */ = {isa = PBXBuildFile; fileRef = C92721201AE9D9070071148C /* LibInfected.m */; };
 		C92721271AE9D9070071148C /* libLibInfected.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C927211B1AE9D9070071148C /* libLibInfected.a */; };
+		C949B3D31AEA542000283C88 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C949B3D21AEA542000283C88 /* CoreBluetooth.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +42,7 @@
 		C92721201AE9D9070071148C /* LibInfected.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LibInfected.m; sourceTree = "<group>"; };
 		C92721261AE9D9070071148C /* LibInfectedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LibInfectedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C927212C1AE9D9070071148C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C949B3D21AEA542000283C88 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,6 +50,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C949B3D31AEA542000283C88 /* CoreBluetooth.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +68,7 @@
 		C92721121AE9D9070071148C = {
 			isa = PBXGroup;
 			children = (
+				C949B3D21AEA542000283C88 /* CoreBluetooth.framework */,
 				C927211D1AE9D9070071148C /* LibInfected */,
 				C927212A1AE9D9070071148C /* LibInfectedTests */,
 				C927211C1AE9D9070071148C /* Products */,

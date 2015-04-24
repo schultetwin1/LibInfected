@@ -17,6 +17,7 @@ NSString *const INFECTED_CHARACTERISTIC_UUID = @"BB6537C6-0622-416C-BB54-79A3911
 @interface LibInfected() <CBPeripheralManagerDelegate, CBCentralManagerDelegate, CBPeripheralDelegate>
 
 @property NSMutableDictionary *peripherals;
+@property NSMutableDictionary* rssis;
 @property BOOL isRunning;
 
 @end
@@ -26,6 +27,7 @@ NSString *const INFECTED_CHARACTERISTIC_UUID = @"BB6537C6-0622-416C-BB54-79A3911
 - (id) init {
     if (self = [super init]) {
         self.peripherals = [NSMutableDictionary dictionary];
+        self.rssis = [NSMutableDictionary dictionary];
         self.myPeripheralManager = [[CBPeripheralManager alloc] initWithDelegate:self queue:nil options:@{CBPeripheralManagerOptionShowPowerAlertKey:@YES, CBPeripheralManagerOptionRestoreIdentifierKey:PERIPHERAL_MANAGER_IDENTIFIER}];
         self.myCentralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil options:@{CBCentralManagerOptionShowPowerAlertKey:@YES, CBCentralManagerOptionRestoreIdentifierKey:CENTRAL_MANAGER_IDENTIFIER}];
     }
@@ -146,18 +148,21 @@ NSString *const INFECTED_CHARACTERISTIC_UUID = @"BB6537C6-0622-416C-BB54-79A3911
 - (void) centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error {
     NSLog(@"Disconnected Device: %@", peripheral.identifier);
     [self.peripherals removeObjectForKey:[peripheral.identifier UUIDString]];
+    [self.rssis removeObjectForKey:[peripheral.identifier UUIDString]];
 }
 
 - (void) centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData RSSI:(NSNumber *)RSSI {
     NSLog(@"Discovered Device: %@", peripheral.identifier);
     
     [self.peripherals setObject:peripheral forKey:[peripheral.identifier UUIDString]];
+    [self.rssis setObject:RSSI forKey:[peripheral.identifier UUIDString]];
     [self.myCentralManager connectPeripheral:[self.peripherals objectForKey:[peripheral.identifier UUIDString]] options:nil];
 }
 
 - (void) centralManager:(CBCentralManager *)central didFailToConnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error {
     NSLog(@"Failed to connect to %@: %@", peripheral.identifier, error.description);
     [self.peripherals removeObjectForKey:[peripheral.identifier UUIDString]];
+    [self.rssis removeObjectForKey:[peripheral.identifier UUIDString]];
 }
 
 - (void) centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral {
@@ -174,6 +179,7 @@ NSString *const INFECTED_CHARACTERISTIC_UUID = @"BB6537C6-0622-416C-BB54-79A3911
         NSLog(@"Error: Could not discover services: %@", error.description);
         [self.myCentralManager cancelPeripheralConnection:peripheral];
         [self.peripherals removeObjectForKey:[peripheral.identifier UUIDString]];
+        [self.rssis removeObjectForKey:[peripheral.identifier UUIDString]];
         return;
     }
     
@@ -187,6 +193,7 @@ NSString *const INFECTED_CHARACTERISTIC_UUID = @"BB6537C6-0622-416C-BB54-79A3911
         NSLog(@"Error: Could not discover characteristics from service: %@", error.description);
         [self.myCentralManager cancelPeripheralConnection:peripheral];
         [self.peripherals removeObjectForKey:[peripheral.identifier UUIDString]];
+        [self.rssis removeObjectForKey:[peripheral.identifier UUIDString]];
         return;
     }
     
@@ -199,10 +206,15 @@ NSString *const INFECTED_CHARACTERISTIC_UUID = @"BB6537C6-0622-416C-BB54-79A3911
     if (error) {
         NSLog(@"Error: Could not update value for characteristic: %@", error.description);
     } else {
-        [self.delegate receivedReadResponse:characteristic.value];
+        [self.delegate receivedReadResponse:characteristic.value peripheralRSSI:self.rssis[[peripheral.identifier UUIDString]]];
     }
     [self.myCentralManager cancelPeripheralConnection:peripheral];
     [self.peripherals removeObjectForKey:[peripheral.identifier UUIDString]];
+    [self.rssis removeObjectForKey:[peripheral.identifier UUIDString]];
+}
+
+- (void) peripheral:(CBPeripheral *)peripheral didReadRSSI:(NSNumber *)RSSI error:(NSError *)error {
+    NSLog(@"Read RSSI: %@", RSSI);
 }
 
 @end
